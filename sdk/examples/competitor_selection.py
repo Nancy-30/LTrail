@@ -13,7 +13,7 @@ Steps:
 import os
 import json
 from typing import List, Optional, Tuple
-import google.genai as genai
+import google.generativeai as genai
 from ltrail_sdk import LTrail, JSONFileStorage, BackendClient, BackendStorage
 
 
@@ -40,22 +40,22 @@ def generate_keywords_with_gemini(
     # Create prompt
     prompt = f"""Given the following product information, generate 3-5 search keywords that would help find similar competitor products on an e-commerce platform.
 
-        Product Title: {product_title}
-        Category: {category}
+Product Title: {product_title}
+Category: {category}
 
-        Generate keywords that:
-        1. Capture the key product attributes (material, size, features)
-        2. Are commonly used in product searches
-        3. Would help find direct competitors
+Generate keywords that:
+1. Capture the key product attributes (material, size, features)
+2. Are commonly used in product searches
+3. Would help find direct competitors
 
-        Return your response as a JSON object with two fields:
-        - "keywords": an array of 3-5 keyword strings
-        - "reasoning": a brief explanation of why these keywords were chosen
+Return your response as a JSON object with two fields:
+- "keywords": an array of 3-5 keyword strings
+- "reasoning": a brief explanation of why these keywords were chosen
 
-        Example format:
-        {{
-            "keywords": ["stainless steel water bottle insulated", "vacuum insulated bottle 32oz", "insulated flask"],
-            "reasoning": "Extracted key attributes: material (stainless steel), capacity (32oz), and key feature (insulated/vacuum)"
+Example format:
+{{
+    "keywords": ["stainless steel water bottle insulated", "vacuum insulated bottle 32oz", "insulated flask"],
+    "reasoning": "Extracted key attributes: material (stainless steel), capacity (32oz), and key feature (insulated/vacuum)"
         }}
     """
 
@@ -104,7 +104,7 @@ def generate_keywords_with_gemini(
         error_msg = f"Could not parse JSON response: {e}"
         print(f"Warning: {error_msg}")
         if "response_text" in locals():
-            print(f"Response was: {response_text[:200]}")
+        print(f"Response was: {response_text[:200]}")
         # Return fallback keywords
         return (
             [
@@ -230,8 +230,8 @@ def main():
     }
 
     # Initialize backend client for real-time updates
-    backend_url = os.getenv("LTRAIL_BACKEND_URL", "http://localhost:8000")
-    backend_client = BackendClient(base_url=backend_url)
+    # BackendClient will use LTRAIL_BACKEND_URL env var or default to production
+    backend_client = BackendClient()  # Uses production backend by default
 
     # Also use JSON storage as backup
     json_storage = JSONFileStorage(output_dir="traces")
@@ -366,7 +366,7 @@ def main():
             print(f"⚠ Warning: Failed to send trace to backend (backend may not be running)")
     except Exception as e:
         print(f"⚠ Warning: Could not send trace to backend: {e}")
-        print(f"  Make sure the backend is running at {backend_url}")
+        print(f"  Traces are still saved locally. Backend may be unavailable.")
 
     # Also save to JSON file as backup
     filepath = json_storage.save_trace(ltrail)
@@ -374,7 +374,12 @@ def main():
     print(f"\n✓ Trace saved to: {filepath}")
     print(f"✓ Selected competitor: {best_competitor['title'] if best_competitor else 'None'}")
     print(f"✓ Trace ID: {ltrail.trace_id}")
-    print(f"✓ View in dashboard: http://localhost:3000 (select trace from sidebar)")
+    backend_url = backend_client.base_url
+    dashboard_url = os.getenv(
+        "LTRAIL_DASHBOARD_URL",
+        "http://localhost:3000",  # Local dashboard URL
+    )
+    print(f"✓ View in dashboard: {dashboard_url}")
     print(f"  Or directly: {backend_url}/api/traces/{ltrail.trace_id}")
 
 

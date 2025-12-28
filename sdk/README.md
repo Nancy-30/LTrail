@@ -11,7 +11,7 @@ It provides visibility into why a system made a particular decision by capturing
 - Item level evaluations with pass or fail checks
 - Minimal boilerplate using context managers
 - JSON export for inspection or dashboards
-- Pure Python with zero dependencies
+- Minimal dependencies (core uses stdlib; `requests` optional for backend)
 
 ## Use Cases
 

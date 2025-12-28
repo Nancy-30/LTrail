@@ -1,6 +1,7 @@
 """HTTP backend client for sending traces to FastAPI backend."""
 
 import json
+import os
 import threading
 from typing import Optional, Dict, Any
 from urllib.parse import urljoin
@@ -19,14 +20,21 @@ from ltrail_sdk.exceptions import LTrailError
 class BackendClient:
     """Client for sending traces to a FastAPI backend."""
 
-    def __init__(self, base_url: str = "http://localhost:8000", api_key: Optional[str] = None):
+    def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
         """
         Initialize the backend client.
 
         Args:
-            base_url: Base URL of the FastAPI backend
+            base_url: Base URL of the FastAPI backend. If None, uses LTRAIL_BACKEND_URL
+                     environment variable or defaults to production URL.
             api_key: Optional API key for authentication
         """
+        # Get backend URL from parameter, environment variable, or default to localhost
+        if base_url is None:
+            base_url = os.getenv(
+                "LTRAIL_BACKEND_URL",
+                "http://localhost:8000"  # Local backend URL
+            )
         if requests is None:
             raise LTrailError(
                 "requests library is required for BackendClient. "
@@ -123,12 +131,13 @@ class BackendClient:
 class BackendStorage:
     """Storage backend that sends traces to FastAPI backend."""
 
-    def __init__(self, base_url: str = "http://localhost:8000", api_key: Optional[str] = None):
+    def __init__(self, base_url: Optional[str] = None, api_key: Optional[str] = None):
         """
         Initialize backend storage.
 
         Args:
-            base_url: Base URL of the FastAPI backend
+            base_url: Base URL of the FastAPI backend. If None, uses LTRAIL_BACKEND_URL
+                     environment variable or defaults to production URL.
             api_key: Optional API key for authentication
         """
         self.client = BackendClient(base_url, api_key)
