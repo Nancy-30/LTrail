@@ -1,9 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -e
 
 echo "Starting LTrail backend..."
 
 cd backend || exit 1
 
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
-uvicorn main:app --host 0.0.0.0 --port $PORT
+python -m uvicorn main:app --host 0.0.0.0 --port $PORT
