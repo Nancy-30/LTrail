@@ -84,8 +84,7 @@ function TraceViewer({ traceId }) {
 
     const fetchTrace = async () => {
         try {
-            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-            const res = await fetch(`${apiUrl}/api/traces/${traceId}`);
+            const apiUrl = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000');            const res = await fetch(`${apiUrl}/api/traces/${traceId}`);
             const data = await res.json();
             setTrace(data);
             updateFlow(data.steps || []);

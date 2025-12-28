@@ -11,8 +11,7 @@ function App() {
 
   const fetchTraces = useCallback(async () => {
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/traces?limit=100`);
+      const apiUrl = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000');      const response = await fetch(`${apiUrl}/api/traces?limit=100`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
