@@ -104,7 +104,7 @@ Example format:
         error_msg = f"Could not parse JSON response: {e}"
         print(f"Warning: {error_msg}")
         if "response_text" in locals():
-        print(f"Response was: {response_text[:200]}")
+            print(f"Response was: {response_text[:200]}")
         # Return fallback keywords
         return (
             [

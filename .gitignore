@@ -5,7 +5,6 @@ traces/
 __pycache__/
 install.ps1
 ltrail_sdk.egg-info/
-
 .env
 .env.local
 .env.development.local
