@@ -14,12 +14,19 @@ static_dir = Path(__file__).parent.parent / "static"
 @router.get("/")
 async def root():
     """
-    Root endpoint.
+    Root endpoint - serve React app.
 
     Returns:
-        API information
+        index.html file for React SPA
     """
-    return {"message": "LTrail Backend API", "version": "1.0.0"}
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return {
+        "message": "LTrail Backend API",
+        "version": "1.0.0",
+        "note": "Frontend not found",
+    }
 
 
 @router.get("/{full_path:path}")
@@ -38,8 +45,12 @@ async def serve_spa(full_path: str):
     Raises:
         HTTPException: If path is API route or frontend not found
     """
-    # Don't serve index.html for API routes
-    if full_path.startswith("api/") or full_path.startswith("ws/"):
+    # Don't serve index.html for API routes or WebSocket
+    if (
+        full_path.startswith("api/")
+        or full_path.startswith("ws/")
+        or full_path.startswith("static/")
+    ):
         raise HTTPException(status_code=404, detail="Not found")
 
     index_file = static_dir / "index.html"
