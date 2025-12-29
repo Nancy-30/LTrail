@@ -10,6 +10,14 @@ The project consists of three main components:
 2. **Backend** (`backend/`) - FastAPI server with WebSocket support for real-time updates
 3. **Frontend** (`frontend/`) - React dashboard with ReactFlow visualization
 
+### High-Level Architecture
+
+![High-Level Architecture](assets/high_lvl.png)
+
+### SDK Component Architecture
+
+![SDK Architecture](assets/sdk.png)
+
 ## Quick Start
 
 > **Note**: For detailed step-by-step instructions, see [RUN.md](RUN.md)
