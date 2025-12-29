@@ -45,7 +45,7 @@ def generate_keywords_with_llm(
     """
     # Configure Gemini
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash-exp")
+    model = genai.GenerativeModel("gemini-2.5-flash")
 
     prompt = f"""Given the following product information, generate 3-5 search keywords that would help find similar competitor products on an e-commerce platform.
 
@@ -280,7 +280,7 @@ def evaluate_relevance_with_llm(
         return [], [], "No candidates to evaluate", True
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash-exp")
+    model = genai.GenerativeModel("gemini-2.5-flash")
 
     # Build evaluation prompt
     candidates_text = "\n".join(
@@ -495,7 +495,7 @@ def main():
             {
                 "product_title": reference["title"],
                 "category": reference["category"],
-                "model": "gemini-2.0-flash-exp",
+                "model": "gemini-2.5-flash",
             }
         )
 
@@ -509,7 +509,7 @@ def main():
         step.log_output(
             {
                 "keywords": keywords,
-                "model": "gemini-2.0-flash-exp",
+                "model": "gemini-2.5-flash",
                 "reasoning": reasoning,
                 "api_success": success,
             }
@@ -632,7 +632,7 @@ def main():
             {
                 "candidates_count": len(qualified),
                 "reference_product": reference,
-                "model": "gemini-2.0-flash-exp",
+                "model": "gemini-2.5-flash",
             }
         )
 

@@ -35,7 +35,7 @@ def generate_keywords_with_gemini(
     genai.configure(api_key=api_key)
 
     # Create model instance
-    model = genai.GenerativeModel("gemini-2.0-flash-exp")
+    model = genai.GenerativeModel("gemini-2.5-flash")
 
     # Create prompt
     prompt = f"""Given the following product information, generate 3-5 search keywords that would help find similar competitor products on an e-commerce platform.
@@ -248,7 +248,7 @@ def main():
             {
                 "product_title": reference["title"],
                 "category": reference["category"],
-                "model": "gemini-2.0-flash-exp",
+                "model": "gemini-2.5-flash",
             }
         )
 
@@ -264,7 +264,7 @@ def main():
         step.log_output(
             {
                 "keywords": keywords,
-                "model": "gemini-2.0-flash-exp",
+                "model": "gemini-2.5-flash",
                 "llm_reasoning": llm_reasoning,
                 "api_success": api_success,
             }

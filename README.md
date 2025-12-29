@@ -12,11 +12,12 @@ The project consists of three main components:
 
 ### High-Level Architecture
 
-![High-Level Architecture](assets/high_lvl.png)
+<img src="assets/high_lvl.png" alt="High-Level Architecture" width="300">
 
 ### SDK Component Architecture
 
-![SDK Architecture](assets/sdk.png)
+<img src="assets/sdk.png" alt="SDK Architecture" width="200">
+
 
 ## Quick Start
 
